@@ -1,10 +1,11 @@
 #![allow(dead_code)]
 
 use chrono::{DateTime, Utc};
+use serde::Serialize;
 use sqlx::{FromRow, PgPool, postgres::PgPoolOptions};
 use uuid::Uuid;
 
-#[derive(Debug, Clone, FromRow)]
+#[derive(Debug, Clone, FromRow, Serialize)]
 pub struct Pie {
     pub id: Uuid,
     pub prediction: String,

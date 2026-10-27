@@ -14,4 +14,5 @@
   # the OS username lookup is unavailable (seen under Nix sandboxes).
   env.PGUSER = builtins.getEnv "USER";
   env.DATABASE_URL = "postgres:///prediction_pies?host=${config.env.PGHOST}&user=${config.env.PGUSER}";
+  env.APP_ADDR = "127.0.0.1:3000";
 }

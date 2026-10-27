@@ -4,7 +4,9 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+axum = "0.8.9"
 chrono = { version = "0.4.45", features = ["serde"] }
+serde = { version = "1.0.229", features = ["derive"] }
 sqlx = { version = "0.9.0", features = ["runtime-tokio", "postgres", "uuid", "chrono"] }
 tokio = { version = "1.54.1", features = ["full"] }
 uuid = { version = "1.29.0", features = ["v4", "serde"] }
