@@ -1,0 +1,2 @@
+ALTER TABLE pies
+ADD COLUMN category TEXT NOT NULL DEFAULT 'general';

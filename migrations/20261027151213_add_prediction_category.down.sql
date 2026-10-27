@@ -1,0 +1,2 @@
+ALTER TABLE pies
+DROP COLUMN category;
