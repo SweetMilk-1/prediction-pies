@@ -8,7 +8,7 @@
     { name = "prediction_pies"; }
   ];
 
-  packages = [ pkgs.sqlx-cli ];
+  packages = [ pkgs.sqlx-cli pkgs.xh ];
 
   # Explicit user avoids libpq/whoami falling back to role "anonymous" when
   # the OS username lookup is unavailable (seen under Nix sandboxes).
