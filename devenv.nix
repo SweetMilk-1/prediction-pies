@@ -6,6 +6,13 @@ let
   );
   apiHostname = "api.fortune-pies-${instanceId}.localhost";
 in {
+  packages = with pkgs; [ 
+    sqlx-cli xh git prek convco mdformat shfmt shellcheck
+  ];
+
+  scripts.fmt.exec = "bash ${config.devenv.root}/scripts/quality.sh fmt";
+  scripts.chk.exec = "bash ${config.devenv.root}/scripts/quality.sh chk";
+
   process.proxy.enable = true;
   processes.api.proxy.hostname = apiHostname;
   env.API_URL = "http://${apiHostname}";
@@ -18,14 +25,6 @@ in {
   services.postgres.listen_addresses = "127.0.0.1";
   services.postgres.port = 5432;
 
-  # pkgs.git ensures `git` resolves to Nix's binary instead of macOS's
-  # /usr/bin/git stub, which breaks under the DEVELOPER_DIR this shell sets
-  # for the Rust/Apple-SDK toolchain (xcrun can't find git and errors out).
-  packages = [ pkgs.sqlx-cli pkgs.xh pkgs.git ];
-
-  # Explicit user in the URL avoids libpq/whoami falling back to role
-  # "anonymous" when the OS username lookup is unavailable (seen under Nix
-  # sandboxes).
   env.DATABASE_URL = "postgresql://${builtins.getEnv "USER"}@127.0.0.1:${toString config.env.PGPORT}/prediction_pies";
 
   processes.api.ports.http.allocate = 3000;
