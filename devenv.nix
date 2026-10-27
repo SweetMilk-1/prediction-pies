@@ -1,6 +1,14 @@
 { pkgs, config, ... }:
 
-{
+let
+  instanceId = builtins.substring 0 12 (
+    builtins.hashString "sha256" config.devenv.root
+  );
+  apiHostname = "api.fortune-pies-${instanceId}.localhost";
+in {
+  process.proxy.enable = true;
+  processes.api.proxy.hostname = apiHostname;
+  env.API_URL = "http://${apiHostname}";
   languages.rust.enable = true;
 
   services.postgres.enable = true;
