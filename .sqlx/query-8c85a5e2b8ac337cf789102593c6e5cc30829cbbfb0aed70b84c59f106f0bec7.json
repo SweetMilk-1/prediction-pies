@@ -1,0 +1,52 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "INSERT INTO pies (prediction) VALUES ($1) RETURNING id, prediction, created_at",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid",
+        "origin": {
+          "Table": {
+            "table": "pies",
+            "name": "id"
+          }
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "prediction",
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "pies",
+            "name": "prediction"
+          }
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "created_at",
+        "type_info": "Timestamptz",
+        "origin": {
+          "Table": {
+            "table": "pies",
+            "name": "created_at"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "8c85a5e2b8ac337cf789102593c6e5cc30829cbbfb0aed70b84c59f106f0bec7"
+}

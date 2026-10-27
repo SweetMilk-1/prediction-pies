@@ -18,4 +18,14 @@
   env.PGUSER = builtins.getEnv "USER";
   env.DATABASE_URL = "postgres:///prediction_pies?host=${config.env.PGHOST}&user=${config.env.PGUSER}";
   env.APP_ADDR = "127.0.0.1:3000";
+
+  tasks."app:migrate" = {
+    exec = "sqlx migrate run";
+    after = [ "devenv:processes:postgres@ready" ];
+  };
+
+  processes.api = {
+    exec = "cargo run";
+    after = [ "app:migrate" ];
+  };
 }

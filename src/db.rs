@@ -2,10 +2,10 @@
 
 use chrono::{DateTime, Utc};
 use serde::Serialize;
-use sqlx::{FromRow, PgPool, postgres::PgPoolOptions};
+use sqlx::{PgPool, postgres::PgPoolOptions};
 use uuid::Uuid;
 
-#[derive(Debug, Clone, FromRow, Serialize)]
+#[derive(Debug, Clone, Serialize)]
 pub struct Pie {
     pub id: Uuid,
     pub prediction: String,
@@ -20,24 +20,29 @@ pub async fn connect(database_url: &str) -> Result<PgPool, sqlx::Error> {
 }
 
 pub async fn list_pies(pool: &PgPool) -> Result<Vec<Pie>, sqlx::Error> {
-    sqlx::query_as::<_, Pie>("SELECT id, prediction, created_at FROM pies ORDER BY created_at")
-        .fetch_all(pool)
-        .await
+    sqlx::query_as!(
+        Pie,
+        "SELECT id, prediction, created_at FROM pies ORDER BY created_at"
+    )
+    .fetch_all(pool)
+    .await
 }
 
 pub async fn random_pie(pool: &PgPool) -> Result<Pie, sqlx::Error> {
-    sqlx::query_as::<_, Pie>(
-        "SELECT id, prediction, created_at FROM pies ORDER BY random() LIMIT 1",
+    sqlx::query_as!(
+        Pie,
+        "SELECT id, prediction, created_at FROM pies ORDER BY random() LIMIT 1"
     )
     .fetch_one(pool)
     .await
 }
 
 pub async fn insert_pie(pool: &PgPool, prediction: &str) -> Result<Pie, sqlx::Error> {
-    sqlx::query_as::<_, Pie>(
+    sqlx::query_as!(
+        Pie,
         "INSERT INTO pies (prediction) VALUES ($1) RETURNING id, prediction, created_at",
+        prediction
     )
-    .bind(prediction)
     .fetch_one(pool)
     .await
 }
